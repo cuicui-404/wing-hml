@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wing-hml"
+version = "0.1.0"
+description = "Heterogeneous-attribute meta-learning for small aerodynamic tables"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "numpy>=1.26,<3", "scipy>=1.13,<2", "scikit-learn>=1.5,<1.8",
+  "PyYAML>=6,<7", "openpyxl>=3.1,<4", "npTDMS>=1.9,<2", "torch>=2.7,<3"
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+tabpfn = ["tabpfn>=2,<3"]
+
+[project.scripts]
+wing-hml = "wing_hml.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

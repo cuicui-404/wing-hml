@@ -1,0 +1,9 @@
+extends: default.yaml
+paths:
+  synthetic: data_work/synthetic_generic
+  checkpoints: runs/generic_only/train
+  results: runs/generic_only/evaluate
+synthetic:
+  weights: {generic: 1.0, airfoil: 0.0, flapping: 0.0}
+training:
+  mixed_steps: 0

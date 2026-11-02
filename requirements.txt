@@ -1,0 +1,8 @@
+# Install the CPU/CUDA PyTorch wheel suitable for the server before this file.
+numpy>=1.26,<3
+scipy>=1.13,<2
+scikit-learn>=1.5,<1.8
+PyYAML>=6,<7
+openpyxl>=3.1,<4
+npTDMS>=1.9,<2
+torch>=2.7,<3

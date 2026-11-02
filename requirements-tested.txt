@@ -1,0 +1,9 @@
+# Direct dependency versions used for the local CPU verification (Python 3.13).
+# Python 3.11 is recommended on Linux. Install matching CPU/CUDA torch first.
+numpy==2.3.5
+scipy==1.16.3
+scikit-learn==1.7.2
+PyYAML==6.0.3
+openpyxl==3.1.5
+npTDMS==1.13.0
+torch==2.9.1

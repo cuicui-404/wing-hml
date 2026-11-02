@@ -1,0 +1,7 @@
+extends: default.yaml
+device: cuda
+paths:
+  raw_data: /srv/wing-data
+  target: /srv/wing-target/mean_forces.csv
+# Copy to server.local.yaml and edit the two paths above.
+# All other paths inherit defaults and resolve relative to the project root.

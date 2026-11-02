@@ -1,0 +1,58 @@
+seed: 42
+device: auto
+threads: 1
+paths:
+  raw_data: ../data
+  prepared: data_work/real
+  synthetic: data_work/synthetic
+  target: ../../Wingedaircraft/稳定阶段15-30周期_平均升力推力.csv
+  splits: data_work/splits.json
+  checkpoints: runs/train
+  results: runs/evaluate
+prepare:
+  validation_groups: [ASCI/NREL/S809]
+  test_groups: [ASCI/CENER/NACA64418]
+  include_dryad_instantaneous: false
+  include_delfly_summary: false
+  include_delfly_tdms: false
+  include_flight: false
+  tdms_window_s: 0.5
+  flight_horizon_s: 0.1
+  min_rows: 8
+synthetic:
+  counts: {train: 80000, val: 10000, test: 10000}
+  weights: {generic: 0.3, airfoil: 0.3, flapping: 0.4}
+  min_rows: 32
+  max_rows: 256
+  min_features: 2
+  max_features: 10
+  ood_fraction: 0.5
+model:
+  hidden: 32
+  dropout: 0.1
+  relationship_update: true
+episode:
+  support_sizes: [3, 5, 8, 16, 32, 48, 63]
+  query_sizes: [16, 32]
+  temporal_gap: 1
+training:
+  batch_size: 32
+  synthetic_steps: 100000
+  mixed_steps: 20000
+  synthetic_lr: 0.001
+  mixed_lr: 0.0001
+  real_probability: 0.5
+  balanced_real: true
+  validation_every: 500
+  validation_episodes: 128
+  patience: 20
+  grad_clip: 5.0
+  inner_steps: 5
+  inner_lr: 0.001
+evaluation:
+  seeds: [42, 43, 44, 45, 46]
+  inner_folds: 3
+  split_seed: 42
+  fewshot_sizes: [3, 5, 8, 16, 32, 48]
+  fewshot_repeats: 30
+  models: [hml, ds, ds_ft, ds_maml, np, np_ft, np_maml, gpr, rsm, svr, rbf, random_forest, polynomial_ridge, polynomial_elasticnet, mars, kernel_ridge, xgboost_lite, gam, tensor_spline, local_multilinear, mean]

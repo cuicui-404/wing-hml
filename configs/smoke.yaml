@@ -1,0 +1,29 @@
+extends: default.yaml
+paths:
+  prepared: data_work/smoke/real
+  synthetic: data_work/smoke/synthetic
+  splits: data_work/smoke/splits.json
+  checkpoints: runs/smoke/train
+  results: runs/smoke/evaluate
+synthetic:
+  counts: {train: 48, val: 12, test: 12}
+  min_rows: 32
+  max_rows: 80
+model:
+  hidden: 16
+episode:
+  support_sizes: [3, 8, 16]
+  query_sizes: [8]
+training:
+  batch_size: 2
+  synthetic_steps: 4
+  mixed_steps: 2
+  validation_every: 2
+  validation_episodes: 4
+  patience: 3
+  inner_steps: 1
+evaluation:
+  seeds: [42]
+  models: [hml, mean, gpr, random_forest]
+  fewshot_sizes: [3, 8]
+  fewshot_repeats: 2
