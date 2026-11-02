@@ -20,15 +20,19 @@
 
 推荐服务器 Linux、Python 3.11。项目支持 Python 3.11–3.13。CPU 可以运行；完整训练建议使用 NVIDIA GPU。训练设备 `auto` 优先 CUDA，否则使用 CPU；默认不会自动启用 MPS。
 
-从项目根目录执行：
+先安装 Miniconda 或 Anaconda，再从项目根目录创建名为 `wing-hml` 的 Conda 虚拟环境。若当前终端仍激活了旧的 `.venv`（提示符包含 `(.venv)`），先执行 `deactivate` 退出。
 
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
+conda create -n wing-hml -c conda-forge python=3.11 pip -y
+conda activate wing-hml
 python -m pip install --upgrade pip
 ```
 
-CPU 环境安装：
+也可将上面的 `conda create` 命令替换为 `conda env create -f environment.yml`，然后执行相同的激活与安装步骤。`environment.yml` 只创建 Python 与 pip 基础环境；项目依赖在激活 `wing-hml` 后安装。若该环境已存在，直接执行 `conda activate wing-hml`，无需重复创建。
+
+以下 CPU 与 NVIDIA 安装方式选择一种，所有命令均在已激活的 `wing-hml` 环境内执行。
+
+CPU 环境安装（Linux）：
 
 ```bash
 python -m pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cpu
@@ -42,19 +46,29 @@ NVIDIA 环境的安装示例（CUDA 12.8 wheel）：
 python -m pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128
 python -m pip install -r requirements-tested.txt 'pytest>=8,<9'
 python -m pip install --no-deps -e .
+```
+
+CUDA wheel 要与服务器驱动兼容；可以按 [PyTorch 官方安装说明](https://pytorch.org/get-started/locally/)选择兼容的 wheel。Linux 驱动不由本项目安装。
+
+安装后检查依赖并记录环境：
+
+```bash
+mkdir -p runs
+python -m pip check
 python -m wing_hml doctor --out runs/environment.json
 ```
 
-CUDA wheel 要与服务器驱动兼容；可以按 [PyTorch 官方安装说明](https://pytorch.org/get-started/locally/)选择兼容的 wheel。`doctor` 应显示 `cuda_available: true` 才表示当前 Python 可以使用 CUDA。Linux 驱动不由本项目安装。
+NVIDIA 环境的 `doctor` 应显示 `cuda_available: true`，才表示当前 Python 可以使用 CUDA；CPU 环境显示 `false` 属于正常情况。
 
 文件用途：`requirements.txt` 给出依赖版本范围，`requirements-tested.txt` 固定本地验证过的直接依赖版本，`requirements-dev.txt` 额外安装测试依赖。它们不是所有传递依赖的完整锁文件。每次服务器运行另存：
 
 ```bash
+mkdir -p runs
 python -m pip freeze > runs/server-pip-freeze.txt
 python -m wing_hml doctor --out runs/server-environment.json
 ```
 
-也可使用 `conda env create -f environment.yml`、`conda activate wing-hml`，再按服务器情况安装匹配的 torch wheel。所有命令均可写成 `wing-hml ...`；README 使用 `python -m wing_hml ...` 以明确 Python 环境。
+以后每次打开新终端，先执行 `conda activate wing-hml`，再运行训练或测试命令。所有命令均可写成 `wing-hml ...`；README 使用 `python -m wing_hml ...` 以明确 Python 环境。
 
 ## 3. 服务器数据与路径配置
 

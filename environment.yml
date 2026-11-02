@@ -4,7 +4,4 @@ channels:
 dependencies:
   - python=3.11
   - pip
-  - pip:
-      - -r requirements-tested.txt
-      - pytest>=8,<9
-      - -e .
+# Activate wing-hml, then install the CPU or NVIDIA dependencies in README.md.
